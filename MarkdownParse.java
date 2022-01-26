@@ -11,24 +11,22 @@ public class MarkdownParse {
         // find the next [, then find the ], then find the (, then take up to
         // the next )
         int currentIndex = 0;
-        int currentIndexChanges = 1;
-        while (currentIndex < markdown.length()) {
+        boolean failsafe = false;
+        while (currentIndex < markdown.length() && !failsafe) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
-            int closeParen = markdown.indexOf(")", openParen);
+            int closeParen = markdown.indexOf(")", openParen); // -1
             if (markdown.substring(openParen + 1, closeParen).contains(".")
                     && !markdown.substring(openParen + 1, closeParen).contains(" ")) {
-                System.out.println("condition is working");
-                System.out.println(currentIndex);
                 toReturn.add(markdown.substring(openParen + 1, closeParen));
-
             }
-            currentIndex = closeParen + 1;
-            currentIndexChanges++;
+            if (!markdown.substring(closeParen + 1, markdown.length()).contains(")")) {
+                failsafe = true;
+            }
+            System.out.println("I am looping :)");
+            currentIndex = closeParen + 1; // 0
         }
-
-        System.out.println("Current index changes this many times: " + currentIndexChanges);
         return toReturn;
     }
 
