@@ -1,6 +1,9 @@
-import static org.junit.Assert.*;
 
-import java.util.List;
+import static org.junit.Assert.*;
+import java.nio.file.Files;
+import java.util.*;
+import java.nio.file.Path;
+import java.io.IOException;
 
 import org.junit.*;
 
@@ -11,8 +14,10 @@ public class MarkdownParseTest {
     }
 
     @Test
-    public void MarkdownParse() {
-        assertEquals(MarkdownParse.getLinks("test-file.md"), List.of("https://something.com", "some-page.html"));
+    public void testMarkDownParseTestFile() throws IOException {
+        Path fileName = Path.of("D:/markdown-parse/newMarkDownParse/test-file.md");
+        String contents = Files.readString(fileName);
+        assertEquals(MarkdownParse.getLinks(contents), List.of("https://something.com", "some-page.html"));
     }
 
 }
