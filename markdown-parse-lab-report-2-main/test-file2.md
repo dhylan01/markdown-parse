@@ -2,4 +2,5 @@
 
 [a link!](https://something.com)
 [another link!](some-page.html)
-![Image](image.png)
+
+some text after the links
