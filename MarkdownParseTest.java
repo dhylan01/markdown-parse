@@ -36,7 +36,7 @@ public class MarkdownParseTest {
     public void testSnippet2() throws IOException {
         Path fileName = Path.of("snippet2.md");
         String contents = Files.readString(fileName);
-        assertEquals(MarkdownParse.getLinks(contents), List.of("a.com(())", "example.com"));
+        assertEquals(MarkdownParse.getLinks(contents), List.of("a.com","a.com(())", "example.com"));
     }
 
     @Test
