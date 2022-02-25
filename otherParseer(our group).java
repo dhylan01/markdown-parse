@@ -1,34 +1,45 @@
 
+// commited and pushed from ieng6
 // File reading code from https://howtodoinjava.com/java/io/java-read-file-to-string-examples/
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+//sychronized
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
-        // the next )
-        int currentIndex = 0;
-        boolean foundParen = true;
-        while (currentIndex < markdown.length() && foundParen) {
-            int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            if (!markdown.substring(closeParen + 1, markdown.length()).contains(")")) {
-                foundParen = false;
-            }
-            if (markdown.substring(openParen + 1, closeParen).contains(".") &&
-                    !markdown.substring(openParen + 1, closeParen).contains(" ") &&
-                    (nextOpenBracket == 0 ||
-                            !markdown.substring(nextOpenBracket - 1, nextOpenBracket).contains("!"))) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
-            }
-            currentIndex = closeParen + 1;
-        }
+        // the next
 
+        int currentIndex = 0;
+        while (currentIndex < markdown.length()) {
+            int nextOpenBracket = markdown.indexOf("[", currentIndex);
+            if (nextOpenBracket == -1)
+                break;
+            if (nextOpenBracket != 0 && markdown.charAt(nextOpenBracket - 1) == '!') {
+                currentIndex = nextOpenBracket + 1;
+                continue;
+            }
+            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
+            if (nextCloseBracket - 1 == nextOpenBracket)
+                break;
+            int openParen = markdown.indexOf("(", nextCloseBracket);
+            if (openParen == -1)
+                break;
+            int closeParen = markdown.indexOf(")", openParen);
+
+            if (nextOpenBracket >= 0 &&
+                    nextCloseBracket >= 0 &&
+                    openParen == nextCloseBracket + 1 &&
+                    closeParen >= 0) {
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+                currentIndex = closeParen + 1;
+            } else {
+                currentIndex += 1;
+            }
+        }
         return toReturn;
     }
 
